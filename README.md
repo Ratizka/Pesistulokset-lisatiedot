@@ -1,4 +1,5 @@
 # Pesistulokset-lisatiedot
+
 Hakee kotariparit, sataako ja tuleeko, kokoonpanot ja muut tiedot ottelusta.
 
 ## Vaatimukset
@@ -17,7 +18,7 @@ Asenna requests, pandas, beautiful soup kirjastot käyttäen komentokehotetta:
 
 Toimii vain, kun ottelu on livetilassa tai päättynyt. Käyttöliittymä on komentokehoitteinen ja kysyy ottelun id, joka löytyy nettisivujen url:stä. Sen jälkeen kysyy tallennettavat tiedostojen nimet.
 
-`"C:/Users/Lenovo/Documents/Pesäpallo/"` 
+`"C:/Users/Lenovo/Documents/Pesäpallo/"`
 
 Vaihtakaa kyseiset tiedostopolut haluamaanne paikkaan.
 
