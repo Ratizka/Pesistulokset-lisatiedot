@@ -77,15 +77,11 @@ def data_muokkaus(data):
 
         vieras_kotiutuslyönti = pd.json_normalize(data['details']["scoringContestPlayers:0"], record_path=['away'], record_prefix='vieras_')
 
-        koti_kotiutuslyöntijatkot = pd.json_normalize(data['details']["scoringContestPlayers:1"], record_path=['home'], record_prefix='kotijatko_')
-
-        vieras_kotiutuslyöntijatkot = pd.json_normalize(data['details']["scoringContestPlayers:1"], record_path=['away'],record_prefix='vierasjatko_')
-
         muut_tiedot = pd.json_normalize(data['details'], errors = 'ignore')
 
         kokoonpano = pd.concat([koti, vieras],  ignore_index=False)
         
-        kotarit = pd.concat([koti_kotiutuslyönti,vieras_kotiutuslyönti, koti_kotiutuslyöntijatkot, vieras_kotiutuslyöntijatkot],  axis=1, ignore_index=False)
+        kotarit = pd.concat([koti_kotiutuslyönti,vieras_kotiutuslyönti],  axis=1, ignore_index=False)
         
         pelinjohto = pd.concat([kotijoukkue_pelinjohto,vierasjoukkue_pelinjohto], ignore_index=False)
 
