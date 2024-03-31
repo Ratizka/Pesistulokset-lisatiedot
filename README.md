@@ -21,6 +21,12 @@ Toimii vain, kun ottelu on livetilassa tai päättynyt. Käyttöliittymä on kom
 
 Vaihtakaa kyseiset tiedostopolut haluamaanne paikkaan.
 
+Sen jälkeen tulee kysely, haluaako suorittaa uudestaan. Paimalla k-kirjainta suorittaa uudelleen ja e-kirjaimella lopettaa. Jos painaa väärää, kysyy uudestaan uutta kirjainta.
+
+Jos kyseisessä sarjassa ei ilmoiteta jatkopareja ennakkoo tai aiemmilta kausilta, käyttäkää ilmanjatkoa versiota.
+
 ## Tietoa
 
-Kotariparit ovat merkitty alkuperäisien numeroiden mukaan. Ei pelaajien id:n mukaan. 
+Kotariparit ovat merkitty alkuperäisien numeroiden mukaan. Ei pelaajien id:n mukaan.
+
+Jos median puoli ei toimi, vaihtakaa url = ('https://www.pesistulokset.fi/ottelut/'). Ainoa puute on, ettei saa pelaajien syntymäaikaa.
