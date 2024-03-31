@@ -4,7 +4,7 @@ Hakee kotariparit, sataako ja tuleeko, kokoonpanot ja muut tiedot ottelusta.
 
 ## Vaatimukset
 
-Asenna Python osoitteesta (https://www.python.org/downloads/)
+Asenna Python osoitteesta <https://www.python.org/downloads/>
 
 Asenna requests, pandas, beautiful soup kirjastot käyttäen komentokehotetta:
 
