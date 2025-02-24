@@ -57,47 +57,47 @@ def kotarit(data):
     
     vieraskokoopano = pd.json_normalize(data['teams']['away']["lineUp"])
     
-    kotikokoopano["joukkue"] = data['teams']['away']["shorthand"]
+    vieraskokoopano["joukkue"] = data['teams']['away']["shorthand"]
     
-    kotikokoopano["etenijänimi"] = kotikokoopano["player.firstName"] + \
+    kotikokoopano["nimi"] = kotikokoopano["player.firstName"] + \
         " " + kotikokoopano["player.lastName"]
         
-    kotikokoopano["lyöjänimi"] = kotikokoopano["player.firstName"] + \
-        " " + kotikokoopano["player.lastName"]
         
-    vieraskokoopano["etenijänimi"] = vieraskokoopano["player.firstName"] + \
-        " " + kotikokoopano["player.lastName"]
-
-    vieraskokoopano["lyöjänimi"] = vieraskokoopano["player.firstName"] + \
-        " " + kotikokoopano["player.lastName"]
-
+    vieraskokoopano["nimi"] = vieraskokoopano["player.firstName"] + \
+        " " + vieraskokoopano["player.lastName"]
     
-    kotieka = data["details"]["scoringContestPlayers:0"]["home"]
+    kotieka = pd.json_normalize(data["details"]["scoringContestPlayers:0"]["home"])
     
-    vieraseka = data["details"]["scoringContestPlayers:0"]["away"]
+    kotieka["kierros"] = 1
     
-    kotijatko = data["details"]["scoringContestPlayers:1"]["koti"]
+    vieraseka = pd.json_normalize(data["details"]["scoringContestPlayers:0"]["away"])
     
-    vierasjatko = data["details"]["scoringContestPlayers:1"]["away"]
+    vieraseka["kierros"] = 1
     
-    kotikotari = pd.concat([pd.json_normalize(kotieka), pd.json_normalize(
-        kotijatko)])
+    kotijatko = pd.json_normalize(data["details"]["scoringContestPlayers:1"]["home"])
     
-    vieraskotari = pd.concat([pd.json_normalize(vieraseka), pd.json_normalize(
-        vierasjatko)])
+    kotijatko["kierros"] = 2
+    
+    vierasjatko = pd.json_normalize(data["details"]["scoringContestPlayers:1"]["away"])
+    
+    vierasjatko["kierros"] = 2
+    
+    kotikotari = pd.concat([kotieka, kotijatko])
+    
+    vieraskotari = pd.concat([vieraseka, vierasjatko])
      
-    kotietenijakotari = kotikotari.merge(kotikokoopano[[
-        "etenijänimi", "joukkue","originalNumber"]], left_on="runner", right_on="originalNumber")
-    
-    kotikotarilopullinen = kotietenijakotari.merge(kotikokoopano[[
-        "lyöjänimi", "joukkue", "originalNumber"]], left_on="batter", right_on="originalNumber", suffixes=("_etenijä", "_lyöja"))
-    
-    vierasetenijakotari = vieraskotari.merge(vieraskokoopano[[
-        "etenijänimi", "joukkue", "originalNumber"]], left_on="runner", right_on="originalNumber")
+    kotikotarieka = kotikotari.merge(kotikokoopano[[
+        "nimi", "originalNumber"]], left_on="batter", right_on="originalNumber", how="inner", validate="many_to_many")
 
-    vieraskotarilopullinen = vierasetenijakotari.merge(vieraskokoopano[[
-        "lyöjänimi", "joukkue", "originalNumber"]], left_on="batter", right_on="originalNumber", suffixes=("_etenijä", "_lyöja"))
-    
-    print(pd.concat([kotikotarilopullinen, vieraskotarilopullinen]))
-    
-    
+
+    kotikotarilopullinen = kotikotarieka.merge(kotikokoopano[[
+    "nimi", "originalNumber", "joukkue"]], left_on="runner", right_on="originalNumber", suffixes=("_lyöjä", "_etenijä"), how="inner", validate="many_to_many")
+
+    vieraskotarieka = vieraskotari.merge(vieraskokoopano[[
+    "nimi", "originalNumber"]], left_on="batter", right_on="originalNumber", how="inner", validate="many_to_many")
+
+    vieraskotarilopullinen = vieraskotarieka.merge(vieraskokoopano[[
+    "nimi", "originalNumber", "joukkue"]], left_on="runner", right_on="originalNumber", suffixes=("_lyöjä", "_etenijä"), how="inner", validate="many_to_many")
+
+    pd.concat([kotikotarilopullinen, vieraskotarilopullinen])
+
