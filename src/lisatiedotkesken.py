@@ -100,4 +100,3 @@ def kotarit(data):
     "nimi", "originalNumber", "joukkue"]], left_on="runner", right_on="originalNumber", suffixes=("_lyöjä", "_etenijä"), how="inner", validate="many_to_many")
 
     pd.concat([kotikotarilopullinen, vieraskotarilopullinen])
-
