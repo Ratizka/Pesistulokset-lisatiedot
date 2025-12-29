@@ -1,6 +1,6 @@
 # Pesistulokset-lisatiedot
 
-Hakee kotariparit, sataako ja tuleeko, kokoonpanot ja muut tiedot ottelusta.
+Hakee kotariparit ja vaihtopenkillä olevat henkilöt. Tarvittaessa hakee sataako, tuleeko, kokoonpanot ja muut tiedot ottelusta. Ovat näkyvissä tulospalvelussa ja osa on saatavilla rajapinnan kautta, joten suosittelen käyttävän niitä.
 
 ## Vaatimukset
 
@@ -16,18 +16,12 @@ Asenna requests, pandas, beautiful soup kirjastot käyttäen komentokehotetta:
 
 ## Käyttö
 
-Toimii vain, kun ottelu on livetilassa tai päättynyt. Käyttöliittymä on komentokehoitteinen ja kysyy ottelun id, joka löytyy nettisivujen url:stä. Sen jälkeen kysyy tallennettavat tiedostojen nimet.
-
-`"C:/Users/Lenovo/Documents/Pesäpallo/"`
-
-Vaihtakaa kyseiset tiedostopolut haluamaanne paikkaan.
+Haku toimii vain, kun ottelu on livetilassa tai päättynyt. Käyttöliittymä on komentokehoitteinen ja kysyy ottelun id, joka löytyy osoitteesta 'https://www.pesistulokset.fi/ottelut/*128172*' kursivoituna. Tiedot tallennetaan hakemiston data-kansioon ottelun id mukaan. Esimerkkidata kotiutuskilpailusta löytyy data-kansiosta.
 
 Sen jälkeen tulee kysely, haluaako suorittaa uudestaan. Paimalla k-kirjainta suorittaa uudelleen ja e-kirjaimella lopettaa. Jos painaa väärää, kysyy uudestaan uutta kirjainta.
 
-Jos kyseisessä sarjassa ei ilmoiteta jatkopareja ennakkoo tai aiemmilta kausilta, käyttäkää ilmanjatkoa versiota.
+Jos kyseisessä sarjassa ei ilmoiteta jatkopareja ennakkoon tai on kaudelta 2023 tai aiemmin, käyttäkää ilmanjatkoa versiota.
 
-## Tietoa
+## Ongelmia
 
-Kotariparit ovat merkitty alkuperäisien numeroiden mukaan. Ei pelaajien id:n mukaan.
-
-Jos median puoli ei toimi, vaihtakaa url = ('https://www.pesistulokset.fi/ottelut/'). Ainoa puute on, ettei saa pelaajien syntymäaikaa.
+Jos median puoli ei toimi, vaihtakaa url = 'https://v1.pesistulokset.fi/ottelut/'.
