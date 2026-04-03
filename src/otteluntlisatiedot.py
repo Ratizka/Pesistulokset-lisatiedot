@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 
 import pandas as pd
@@ -20,8 +21,7 @@ def keitto(html):
     try:
         html_str = html.decode('utf-8')
         soup = BeautifulSoup(html_str, 'html.parser')
-        data = json.loads(soup.find('script', id='online-match-data').text)
-        return data
+        return json.loads(soup.find('script', id='online-match-data').text)
     except AttributeError as e:
         print(f'Virhe: {e}')
         sys.exit(1)
@@ -33,14 +33,18 @@ def kokoonpano(data):
 
     vieraskokoopano = pd.json_normalize(data['teams']['away']["lineUp"])
 
+    kokoonpano = pd.concat(
+        [kotikokoopano, vieraskokoopano],  ignore_index=False)
+
+    return kokoonpano
+
+
+def johtotoimijat(data):
     kotipj = pd.json_normalize(
         data['teams']['home']["managersLineUp"])
 
     vieraspj = pd.json_normalize(
         data['teams']['away']["managersLineUp"])
-
-    kokoonpano = pd.concat(
-        [kotikokoopano, vieraskokoopano],  ignore_index=False)
 
     pj = pd.concat(
         [kotipj, vieraspj],  ignore_index=False)
@@ -49,6 +53,10 @@ def kokoonpano(data):
                     "vieras": data["details"]["OtherRoles:away"]}
 
     vaihtopenkki_norm = pd.json_normalize(vaihtopenkki)
+
+    print(data["details"]["OtherRoles:home"])
+
+    print(data["details"]["OtherRoles:away"])
 
 
 def kotarit(data):
@@ -103,4 +111,46 @@ def kotarit(data):
     vieraskotarilopullinen = vieraskotarieka.merge(vieraskokoopano[[
         "nimi", "originalNumber", "joukkue"]], left_on="runner", right_on="originalNumber", suffixes=("_lyöjä", "_etenijä"), how="inner", validate="many_to_many")
 
-    pd.concat([kotikotarilopullinen, vieraskotarilopullinen])
+    parit = pd.concat([kotikotarilopullinen, vieraskotarilopullinen])
+
+    return parit
+
+
+def tallennacsv(df, nimi):
+    df.to_csv(f'{os.getcwd()}/data/{nimi}.csv', index=False)
+
+
+def main():
+
+    ottelunId = input("Anna ottelun id: ")
+
+    url = (f'https://v1.pesistulokset.fi/media/ottelu/{ottelunId}')
+
+    req = pyynto(url)
+
+    data = keitto(req)
+
+    lyontijarjestys = kokoonpano(data)
+
+    johtotoimijat(data)
+
+    parit = kotarit(data)
+
+    tallennacsv(lyontijarjestys, ottelunId + "kokoonpano")
+
+    tallennacsv(parit, ottelunId + "kotarit")
+    
+    while True:
+        suoritaUudestaan = input(
+            "Suorita ohjelma uudestaan kyllä/ei (k/e): ")
+        if suoritaUudestaan.lower() == "k":
+            main()
+        if suoritaUudestaan.lower() == "e":
+            print("Ohjelma suljetaan")
+            sys.exit(1)
+        else:
+            print('Painoit väärää kirjainta')
+
+
+if __name__ == '__main__':
+    main()
